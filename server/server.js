@@ -8,6 +8,9 @@ require("dotenv").config();
 
 const { connectDB } = require("./config");
 const productRoutes = require("./routes/products");
+const salesRoutes = require("./routes/sales");
+
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -21,6 +24,7 @@ console.log("Product routes loaded");
 
 // Product API routes
 app.use("/api/products", productRoutes);
+app.use("/api/sales", salesRoutes);
 
 app.get("/api/products/:id", async (req, res) => {
     try {

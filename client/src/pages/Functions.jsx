@@ -2,6 +2,7 @@
 import { useState } from "react";
 import "./Functions.css";
 import ETLModule from "./ETLModule";
+import EDAModule from "./EDAModule";
 
 const modules = [
     {
@@ -154,10 +155,8 @@ function Functions() {
                             <p className="functions-eyebrow">
                                 MODULE {selectedModule.number}
                             </p>
-
                             <h3>{selectedModule.title}</h3>
                         </div>
-
                         <button
                             type="button"
                             className="functions-close-button"
@@ -169,7 +168,9 @@ function Functions() {
                     </div>
 
                     {selectedModule.id === "etl" ? (
-                        <p>ETL module temporarily disabled for testing.</p>
+                        <ETLModule />
+                    ) : selectedModule.id === "eda" ? (
+                        <EDAModule />
                     ) : (
                         <>
                             <p className="functions-detail-description">
@@ -178,59 +179,57 @@ function Functions() {
 
                             <div className="functions-detail-notice">
                                 <strong>Module workspace</strong>
-
                                 <p>
                                     This module will be implemented in the next development step.
                                 </p>
                             </div>
                         </>
                     )}
+
+                    <section className="functions-workflow">
+                        <div className="functions-workflow-heading">
+                            <p className="functions-eyebrow">THE BIG PICTURE</p>
+                            <h3>How the pieces work together</h3>
+                        </div>
+
+                        <div className="functions-workflow-steps">
+                            <div className="functions-workflow-step">
+                                <span>01</span>
+                                <strong>Application Data</strong>
+                                <p>Products and inventory stored in MongoDB.</p>
+                            </div>
+
+                            <div className="functions-workflow-arrow">→</div>
+
+                            <div className="functions-workflow-step">
+                                <span>02</span>
+                                <strong>ETL Processing</strong>
+                                <p>Extract, validate, clean, and transform data.</p>
+                            </div>
+
+                            <div className="functions-workflow-arrow">→</div>
+
+                            <div className="functions-workflow-step">
+                                <span>03</span>
+                                <strong>EDA & OLAP</strong>
+                                <p>Analyze patterns, summaries, and dimensions.</p>
+                            </div>
+
+                            <div className="functions-workflow-arrow">→</div>
+
+                            <div className="functions-workflow-step">
+                                <span>04</span>
+                                <strong>Decision Support</strong>
+                                <p>Present evidence-based business insights.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <footer className="functions-footer-note">
+                        ShopSphere · E-Commerce Intelligence and Decision Support Platform
+                    </footer>
                 </section>
             )}
-
-
-            <section className="functions-workflow">
-                <div className="functions-workflow-heading">
-                    <p className="functions-eyebrow">THE BIG PICTURE</p>
-                    <h3>How the pieces work together</h3>
-                </div>
-
-                <div className="functions-workflow-steps">
-                    <div className="functions-workflow-step">
-                        <span>01</span>
-                        <strong>Application Data</strong>
-                        <p>Products and inventory stored in MongoDB.</p>
-                    </div>
-
-                    <div className="functions-workflow-arrow">→</div>
-
-                    <div className="functions-workflow-step">
-                        <span>02</span>
-                        <strong>ETL Processing</strong>
-                        <p>Extract, validate, clean, and transform data.</p>
-                    </div>
-
-                    <div className="functions-workflow-arrow">→</div>
-
-                    <div className="functions-workflow-step">
-                        <span>03</span>
-                        <strong>EDA & OLAP</strong>
-                        <p>Analyze patterns, summaries, and dimensions.</p>
-                    </div>
-
-                    <div className="functions-workflow-arrow">→</div>
-
-                    <div className="functions-workflow-step">
-                        <span>04</span>
-                        <strong>Decision Support</strong>
-                        <p>Present evidence-based business insights.</p>
-                    </div>
-                </div>
-            </section>
-
-            <footer className="functions-footer-note">
-                ShopSphere · E-Commerce Intelligence and Decision Support Platform
-            </footer>
         </div>
     );
 }

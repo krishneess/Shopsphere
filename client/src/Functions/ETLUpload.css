@@ -1,0 +1,164 @@
+.etl-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    color: var(--text-primary, #e8eaf0);
+}
+
+.etl-upload-heading h3 {
+    margin: 6px 0;
+    font-size: 24px;
+}
+
+.etl-upload-heading p {
+    color: var(--text-muted, #9ca3af);
+    margin: 0;
+}
+
+.etl-eyebrow {
+    color: #8b9cff !important;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+}
+
+.etl-upload-box {
+    border: 1px dashed var(--panel-border, #41485a);
+    background: var(--panel-bg, #171a23);
+    border-radius: 14px;
+    padding: 32px 22px;
+    text-align: center;
+}
+
+.etl-upload-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 14px;
+    border-radius: 12px;
+    background: #252b40;
+    color: #a7b2ff;
+    font-size: 28px;
+}
+
+.etl-upload-box h4 {
+    margin: 0 0 8px;
+}
+
+.etl-upload-box p {
+    color: var(--text-muted, #9ca3af);
+    font-size: 12px;
+    margin: 0 0 18px;
+}
+
+.etl-upload-box input[type="file"] {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto 18px;
+    color: var(--text-muted, #9ca3af);
+}
+
+.etl-selected-file {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    max-width: 520px;
+    margin: 0 auto 16px;
+    padding: 12px;
+    border: 1px solid var(--panel-border, #303544);
+    border-radius: 8px;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.etl-upload-button {
+    border: 0;
+    border-radius: 8px;
+    background: #6878e8;
+    color: white;
+    padding: 11px 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.etl-upload-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.etl-result {
+    border: 1px solid var(--panel-border, #303544);
+    background: var(--panel-bg, #171a23);
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.etl-result-success {
+    border-color: #286b50;
+}
+
+.etl-result-error {
+    border-color: #854545;
+}
+
+.etl-result p {
+    color: var(--text-muted, #9ca3af);
+    font-size: 12px;
+    margin: 5px 0 0;
+}
+
+.etl-result-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.etl-success-icon {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #1f503e;
+    color: #8be0b7;
+}
+
+.etl-result-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.etl-result-stats div {
+    padding: 13px;
+    border-radius: 8px;
+    background: var(--panel-bg-secondary, #202431);
+}
+
+.etl-result-stats span,
+.etl-result-stats strong {
+    display: block;
+}
+
+.etl-result-stats span {
+    color: var(--text-muted, #9ca3af);
+    font-size: 12px;
+}
+
+.etl-result-stats strong {
+    margin-top: 6px;
+    font-size: 22px;
+}
+
+.etl-rejected-details {
+    margin-top: 16px;
+    font-size: 12px;
+}
+
+.etl-rejected-details pre {
+    max-height: 240px;
+    overflow: auto;
+    white-space: pre-wrap;
+}

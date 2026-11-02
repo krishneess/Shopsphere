@@ -1,0 +1,145 @@
+orderId,orderDate,productId,productName,category,quantity,unitPrice,unitCost,returned
+ORD1001,2026-10-21,P001,Wireless Mouse,Electronics,3,799,420,false
+ORD1002,2026-08-18,P009,Backpack,Accessories,1,1899,1050,false
+ORD1003,2026-08-05,P002,Mechanical Keyboard,Electronics,2,2499,1500,false
+ORD1004,2026-08-04,P003,USB-C Hub,Electronics,2,1599,900,false
+ORD1004,2026-08-04,P008,Water Bottle,Lifestyle,3,499,220,false
+ORD1004,2026-08-04,P007,Desk Lamp,Home Office,1,999,500,false
+ORD1005,2026-08-21,P005,Notebook Set,Stationery,3,299,110,false
+ORD1005,2026-08-21,P002,Mechanical Keyboard,Electronics,4,2499,1500,false
+ORD1006,2026-09-14,P004,Laptop Stand,Accessories,1,1199,650,false
+ORD1006,2026-09-14,P001,Wireless Mouse,Electronics,4,799,420,true
+ORD1006,2026-09-14,P006,Gel Pen Pack,Stationery,3,199,70,false
+ORD1007,2026-10-19,P007,Desk Lamp,Home Office,1,999,500,false
+ORD1007,2026-10-19,P009,Backpack,Accessories,3,1899,1050,false
+ORD1008,2026-08-30,P005,Notebook Set,Stationery,4,299,110,false
+ORD1009,2026-09-16,P005,Notebook Set,Stationery,2,299,110,false
+ORD1010,2026-10-29,P008,Water Bottle,Lifestyle,2,499,220,false
+ORD1011,2026-09-01,P006,Gel Pen Pack,Stationery,3,199,70,false
+ORD1012,2026-10-21,P003,USB-C Hub,Electronics,1,1599,900,false
+ORD1012,2026-10-21,P004,Laptop Stand,Accessories,1,1199,650,false
+ORD1012,2026-10-21,P010,Phone Charger,Electronics,4,699,350,false
+ORD1013,2026-08-28,P011,Headphones,Electronics,4,1799,980,false
+ORD1013,2026-08-28,P004,Laptop Stand,Accessories,4,1199,650,false
+ORD1013,2026-08-28,P008,Water Bottle,Lifestyle,2,499,220,false
+ORD1014,2026-10-11,P004,Laptop Stand,Accessories,4,1199,650,false
+ORD1014,2026-10-11,P008,Water Bottle,Lifestyle,2,499,220,false
+ORD1014,2026-10-11,P011,Headphones,Electronics,1,1799,980,false
+ORD1015,2026-08-15,P008,Water Bottle,Lifestyle,4,499,220,false
+ORD1016,2026-09-19,P008,Water Bottle,Lifestyle,3,499,220,false
+ORD1016,2026-09-19,P006,Gel Pen Pack,Stationery,1,199,70,false
+ORD1017,2026-08-15,P010,Phone Charger,Electronics,3,699,350,false
+ORD1017,2026-08-15,P005,Notebook Set,Stationery,4,299,110,true
+ORD1018,2026-09-03,P010,Phone Charger,Electronics,3,699,350,false
+ORD1018,2026-09-03,P007,Desk Lamp,Home Office,2,999,500,false
+ORD1018,2026-09-03,P002,Mechanical Keyboard,Electronics,2,2499,1500,false
+ORD1019,2026-10-07,P008,Water Bottle,Lifestyle,4,499,220,true
+ORD1020,2026-09-16,P003,USB-C Hub,Electronics,1,1599,900,false
+ORD1021,2026-10-02,P012,Coffee Mug,Lifestyle,2,399,160,false
+ORD1022,2026-09-30,P002,Mechanical Keyboard,Electronics,2,2499,1500,false
+ORD1022,2026-09-30,P007,Desk Lamp,Home Office,2,999,500,false
+ORD1022,2026-09-30,P008,Water Bottle,Lifestyle,4,499,220,false
+ORD1023,2026-10-23,P006,Gel Pen Pack,Stationery,1,199,70,false
+ORD1023,2026-10-23,P007,Desk Lamp,Home Office,1,999,500,false
+ORD1024,2026-10-15,P003,USB-C Hub,Electronics,1,1599,900,false
+ORD1024,2026-10-15,P001,Wireless Mouse,Electronics,1,799,420,false
+ORD1025,2026-08-10,P003,USB-C Hub,Electronics,2,1599,900,false
+ORD1025,2026-08-10,P009,Backpack,Accessories,4,1899,1050,false
+ORD1026,2026-09-30,P003,USB-C Hub,Electronics,4,1599,900,false
+ORD1026,2026-09-30,P002,Mechanical Keyboard,Electronics,4,2499,1500,false
+ORD1027,2026-08-07,P001,Wireless Mouse,Electronics,3,799,420,false
+ORD1028,2026-08-14,P003,USB-C Hub,Electronics,4,1599,900,false
+ORD1029,2026-08-24,P006,Gel Pen Pack,Stationery,1,199,70,false
+ORD1029,2026-08-24,P011,Headphones,Electronics,1,1799,980,true
+ORD1030,2026-10-09,P012,Coffee Mug,Lifestyle,2,399,160,false
+ORD1031,2026-10-02,P003,USB-C Hub,Electronics,1,1599,900,false
+ORD1031,2026-10-02,P005,Notebook Set,Stationery,1,299,110,false
+ORD1032,2026-09-03,P004,Laptop Stand,Accessories,4,1199,650,false
+ORD1032,2026-09-03,P009,Backpack,Accessories,3,1899,1050,false
+ORD1033,2026-08-08,P009,Backpack,Accessories,1,1899,1050,false
+ORD1033,2026-08-08,P001,Wireless Mouse,Electronics,2,799,420,true
+ORD1033,2026-08-08,P004,Laptop Stand,Accessories,1,1199,650,false
+ORD1034,2026-08-09,P001,Wireless Mouse,Electronics,2,799,420,false
+ORD1034,2026-08-09,P011,Headphones,Electronics,1,1799,980,false
+ORD1034,2026-08-09,P005,Notebook Set,Stationery,4,299,110,false
+ORD1035,2026-10-12,P004,Laptop Stand,Accessories,3,1199,650,false
+ORD1035,2026-10-12,P009,Backpack,Accessories,4,1899,1050,false
+ORD1036,2026-10-22,P006,Gel Pen Pack,Stationery,1,199,70,true
+ORD1036,2026-10-22,P012,Coffee Mug,Lifestyle,1,399,160,true
+ORD1037,2026-08-28,P004,Laptop Stand,Accessories,2,1199,650,false
+ORD1037,2026-08-28,P012,Coffee Mug,Lifestyle,2,399,160,false
+ORD1037,2026-08-28,P011,Headphones,Electronics,3,1799,980,false
+ORD1038,2026-10-23,P001,Wireless Mouse,Electronics,1,799,420,false
+ORD1038,2026-10-23,P010,Phone Charger,Electronics,2,699,350,false
+ORD1038,2026-10-23,P004,Laptop Stand,Accessories,1,1199,650,false
+ORD1039,2026-08-20,P004,Laptop Stand,Accessories,3,1199,650,false
+ORD1039,2026-08-20,P003,USB-C Hub,Electronics,3,1599,900,false
+ORD1040,2026-09-02,P002,Mechanical Keyboard,Electronics,4,2499,1500,false
+ORD1041,2026-08-06,P005,Notebook Set,Stationery,2,299,110,false
+ORD1042,2026-09-03,P009,Backpack,Accessories,4,1899,1050,false
+ORD1043,2026-08-15,P012,Coffee Mug,Lifestyle,2,399,160,false
+ORD1044,2026-09-17,P007,Desk Lamp,Home Office,3,999,500,false
+ORD1044,2026-09-17,P006,Gel Pen Pack,Stationery,1,199,70,false
+ORD1044,2026-09-17,P001,Wireless Mouse,Electronics,2,799,420,false
+ORD1045,2026-10-25,P005,Notebook Set,Stationery,4,299,110,false
+ORD1046,2026-08-20,P011,Headphones,Electronics,2,1799,980,false
+ORD1047,2026-08-04,P009,Backpack,Accessories,3,1899,1050,false
+ORD1048,2026-09-22,P004,Laptop Stand,Accessories,1,1199,650,false
+ORD1049,2026-08-05,P003,USB-C Hub,Electronics,4,1599,900,false
+ORD1049,2026-08-05,P010,Phone Charger,Electronics,2,699,350,false
+ORD1050,2026-10-24,P005,Notebook Set,Stationery,3,299,110,false
+ORD1051,2026-09-05,P008,Water Bottle,Lifestyle,3,499,220,false
+ORD1051,2026-09-05,P005,Notebook Set,Stationery,1,299,110,false
+ORD1052,2026-09-03,P007,Desk Lamp,Home Office,3,999,500,true
+ORD1053,2026-10-16,P005,Notebook Set,Stationery,4,299,110,false
+ORD1053,2026-10-16,P010,Phone Charger,Electronics,1,699,350,false
+ORD1054,2026-10-13,P004,Laptop Stand,Accessories,4,1199,650,true
+ORD1055,2026-10-08,P005,Notebook Set,Stationery,1,299,110,false
+ORD1056,2026-09-12,P004,Laptop Stand,Accessories,3,1199,650,false
+ORD1056,2026-09-12,P011,Headphones,Electronics,4,1799,980,false
+ORD1056,2026-09-12,P009,Backpack,Accessories,3,1899,1050,false
+ORD1057,2026-08-25,P008,Water Bottle,Lifestyle,2,499,220,false
+ORD1057,2026-08-25,P005,Notebook Set,Stationery,3,299,110,false
+ORD1058,2026-08-01,P004,Laptop Stand,Accessories,3,1199,650,false
+ORD1058,2026-08-01,P006,Gel Pen Pack,Stationery,4,199,70,false
+ORD1059,2026-10-05,P010,Phone Charger,Electronics,2,699,350,false
+ORD1059,2026-10-05,P012,Coffee Mug,Lifestyle,3,399,160,false
+ORD1060,2026-10-21,P005,Notebook Set,Stationery,3,299,110,false
+ORD1060,2026-10-21,P010,Phone Charger,Electronics,2,699,350,false
+ORD1061,2026-08-06,P012,Coffee Mug,Lifestyle,1,399,160,false
+ORD1062,2026-10-20,P003,USB-C Hub,Electronics,2,1599,900,false
+ORD1062,2026-10-20,P009,Backpack,Accessories,1,1899,1050,false
+ORD1062,2026-10-20,P006,Gel Pen Pack,Stationery,1,199,70,false
+ORD1063,2026-08-29,P010,Phone Charger,Electronics,4,699,350,true
+ORD1064,2026-09-01,P006,Gel Pen Pack,Stationery,4,199,70,false
+ORD1065,2026-10-11,P004,Laptop Stand,Accessories,4,1199,650,false
+ORD1065,2026-10-11,P010,Phone Charger,Electronics,4,699,350,false
+ORD1065,2026-10-11,P006,Gel Pen Pack,Stationery,4,199,70,false
+ORD1066,2026-09-01,P010,Phone Charger,Electronics,2,699,350,false
+ORD1066,2026-09-01,P007,Desk Lamp,Home Office,1,999,500,false
+ORD1067,2026-08-31,P005,Notebook Set,Stationery,1,299,110,false
+ORD1067,2026-08-31,P011,Headphones,Electronics,2,1799,980,false
+ORD1068,2026-08-20,P001,Wireless Mouse,Electronics,4,799,420,false
+ORD1069,2026-09-29,P001,Wireless Mouse,Electronics,4,799,420,false
+ORD1069,2026-09-29,P010,Phone Charger,Electronics,1,699,350,false
+ORD1070,2026-10-13,P006,Gel Pen Pack,Stationery,3,199,70,false
+ORD1070,2026-10-13,P012,Coffee Mug,Lifestyle,4,399,160,false
+ORD1071,2026-10-09,P011,Headphones,Electronics,4,1799,980,true
+ORD1071,2026-10-09,P006,Gel Pen Pack,Stationery,3,199,70,false
+ORD1071,2026-10-09,P004,Laptop Stand,Accessories,4,1199,650,false
+ORD1072,2026-09-29,P012,Coffee Mug,Lifestyle,1,399,160,false
+ORD1073,2026-10-15,P008,Water Bottle,Lifestyle,4,499,220,false
+ORD1073,2026-10-15,P002,Mechanical Keyboard,Electronics,3,2499,1500,false
+ORD1073,2026-10-15,P006,Gel Pen Pack,Stationery,2,199,70,false
+ORD1074,2026-09-13,P004,Laptop Stand,Accessories,4,1199,650,false
+ORD1074,2026-09-13,P012,Coffee Mug,Lifestyle,1,399,160,false
+ORD1075,2026-10-09,P012,Coffee Mug,Lifestyle,3,399,160,false
+ORD1076,2026-08-09,P010,Phone Charger,Electronics,2,699,350,false
+ORD1077,2026-08-03,P002,Mechanical Keyboard,Electronics,2,2499,1500,false
+ORD1077,2026-08-03,P009,Backpack,Accessories,3,1899,1050,false
+ORD1078,2026-08-22,P008,Water Bottle,Lifestyle,2,499,220,false
+ORD1078,2026-08-22,P009,Backpack,Accessories,1,1899,1050,false
+ORD1078,2026-08-22,P002,Mechanical Keyboard,Electronics,3,2499,1500,false
+ORD1079,2026-09-18,P012,Coffee Mug,Lifestyle,2,399,160,false
+ORD1079,2026-09-18,P003,USB-C Hub,Electronics,3,1599,900,false
+ORD1080,2026-10-16,P010,Phone Charger,Electronics,1,699,350,false

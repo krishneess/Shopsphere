@@ -1,98 +1,92 @@
-
 import { useState } from "react";
 import "./ETLModule.css";
 
-const API_URL = "http://localhost:5000/api/products";
-
-function getProducts(response) {
-  if (Array.isArray(response)) return response;
-  if (Array.isArray(response?.products)) return response.products;
-  if (Array.isArray(response?.data)) return response.data;
-  return [];
-}
-
-function validateAndClean(products) {
-  return products.map((product, index) => {
-    const issues = [];
-
-    const name =
-      typeof product.name === "string" ? product.name.trim() : "";
-
-    const category =
-      typeof product.category === "string"
-        ? product.category.trim()
-        : "";
-
-    const price = Number(product.price);
-    const stock = Number(product.stock);
-
-    if (!name) issues.push("Missing product name");
-    if (!category) issues.push("Missing category");
-
-    if (
-      product.price === "" ||
-      product.price === null ||
-      product.price === undefined ||
-      !Number.isFinite(price) ||
-      price < 0
-    ) {
-      issues.push("Invalid price");
-    }
-
-    if (
-      product.stock === "" ||
-      product.stock === null ||
-      product.stock === undefined ||
-      !Number.isFinite(stock) ||
-      !Number.isInteger(stock) ||
-      stock < 0
-    ) {
-      issues.push("Invalid stock");
-    }
-
-    return {
-      ...product,
-      name,
-      category,
-      price,
-      stock,
-      _etlId: product._id || product.id || `record-${index + 1}`,
-      _etlIssues: issues,
-      _etlClean: issues.length === 0,
-    };
-  });
-}
+const API_URL = "http://localhost:5000/api/sales/upload";
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 function ETLModule() {
-  const [products, setProducts] = useState([]);
-  const [hasRun, setHasRun] = useState(false);
+  const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [filter, setFilter] = useState("all");
+  const [result, setResult] = useState(null);
+
+  function handleFileChange(event) {
+    const selectedFile = event.target.files?.[0];
+
+    setError("");
+    setResult(null);
+
+    if (!selectedFile) {
+      setFile(null);
+      return;
+    }
+
+    const extension = selectedFile.name
+      .split(".")
+      .pop()
+      .toLowerCase();
+
+    if (!["csv", "xls", "xlsx"].includes(extension)) {
+      setFile(null);
+      setError("Please select a CSV, XLS, or XLSX file.");
+      event.target.value = "";
+      return;
+    }
+
+    if (selectedFile.size > MAX_FILE_SIZE) {
+      setFile(null);
+      setError("The selected file exceeds the 10 MB limit.");
+      event.target.value = "";
+      return;
+    }
+
+    setFile(selectedFile);
+  }
+
+  function removeFile() {
+    setFile(null);
+    setResult(null);
+    setError("");
+
+    const input = document.getElementById("etl-sales-file");
+
+    if (input) {
+      input.value = "";
+    }
+  }
 
   async function runETL() {
+    if (!file) {
+      setError("Choose a dataset file before running ETL.");
+      return;
+    }
+
     setLoading(true);
     setError("");
-    setHasRun(false);
+    setResult(null);
 
     try {
-      const response = await fetch(API_URL);
+      const formData = new FormData();
+
+      // Must match the upload field expected by the backend.
+      formData.append("salesFile", file);
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        throw new Error(`Backend returned HTTP ${response.status}`);
-      }
-
-      const data = await response.json();
-      const extracted = getProducts(data);
-
-      if (!Array.isArray(data) && extracted.length === 0) {
         throw new Error(
-          "The API response format was unexpected. Check your GET /api/products response."
+          data.message ||
+            data.error ||
+            `Backend returned HTTP ${response.status}`
         );
       }
 
-      setProducts(validateAndClean(extracted));
-      setHasRun(true);
+      setResult(data);
     } catch (err) {
       setError(
         `${err.message}. Make sure your backend is running on port 5000.`
@@ -102,24 +96,27 @@ function ETLModule() {
     }
   }
 
-  const cleanCount = products.filter((p) => p._etlClean).length;
-  const issueCount = products.length - cleanCount;
+  const extractedCount = Number(result?.extractedCount);
+  const acceptedCount = Number(result?.acceptedCount);
+  const rejectedCount = Number(result?.rejectedCount);
 
-  const visibleProducts = products.filter((product) => {
-    if (filter === "clean") return product._etlClean;
-    if (filter === "issues") return !product._etlClean;
-    return true;
-  });
+  const dataQuality =
+    Number.isFinite(extractedCount) &&
+    Number.isFinite(acceptedCount) &&
+    extractedCount > 0
+      ? `${Math.round((acceptedCount / extractedCount) * 100)}%`
+      : "N/A";
 
   return (
     <div className="etl-module">
+      {/* Header */}
       <div className="etl-heading">
         <div>
           <p className="etl-eyebrow">DATA PIPELINE / MODULE 01</p>
           <h3>ETL & Data Quality</h3>
           <p>
-            Extract product records, validate fields, and prepare
-            a cleaned dataset for further analysis.
+            Upload your sales dataset, extract its records, and run
+            the backend ETL pipeline to validate and import the data.
           </p>
         </div>
 
@@ -127,40 +124,66 @@ function ETLModule() {
           type="button"
           className="etl-run-button"
           onClick={runETL}
-          disabled={loading}
+          disabled={loading || !file}
         >
           {loading ? "Processing..." : "▶ Run ETL"}
         </button>
       </div>
 
-      <div className="etl-stats">
-        <div className="etl-stat">
-          <span>Records Extracted</span>
-          <strong>{hasRun ? products.length : "—"}</strong>
+      {/* Upload section */}
+      <div className="etl-upload-panel">
+        <div className="etl-upload-copy">
+          <div className="etl-upload-icon">↑</div>
+
+          <div>
+            <h4>Upload your sales dataset</h4>
+            <p>CSV, XLS, or XLSX · Maximum file size 10 MB</p>
+          </div>
         </div>
 
-        <div className="etl-stat">
-          <span>Clean Records</span>
-          <strong>{hasRun ? cleanCount : "—"}</strong>
-        </div>
+        <input
+          id="etl-sales-file"
+          className="etl-file-input"
+          type="file"
+          accept=".csv,.xls,.xlsx"
+          onChange={handleFileChange}
+          disabled={loading}
+        />
 
-        <div className="etl-stat">
-          <span>Records With Issues</span>
-          <strong>{hasRun ? issueCount : "—"}</strong>
-        </div>
+        <label
+          htmlFor="etl-sales-file"
+          className={`etl-file-button ${loading ? "disabled" : ""}`}
+        >
+          Select file
+        </label>
 
-        <div className="etl-stat">
-          <span>Data Quality</span>
-          <strong>
-            {hasRun
-              ? products.length
-                ? `${Math.round((cleanCount / products.length) * 100)}%`
-                : "N/A"
-              : "—"}
-          </strong>
-        </div>
+        {file && (
+          <div className="etl-selected-file">
+            <div className="etl-file-details">
+              <span className="etl-file-check">✓</span>
+
+              <div className="etl-file-text">
+                <strong>{file.name}</strong>
+                <p>
+                  {(file.size / 1024).toFixed(1)} KB · Ready to process
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className="etl-remove-file"
+              onClick={removeFile}
+              disabled={loading}
+              aria-label="Remove selected file"
+            >
+              ×
+            </button>
+          </div>
+        )}
       </div>
 
+      {/* Error message */}
       {error && (
         <div className="etl-message etl-error" role="alert">
           <strong>ETL could not run</strong>
@@ -168,100 +191,75 @@ function ETLModule() {
         </div>
       )}
 
-      {!hasRun && !error && (
+      {/* Statistics */}
+      <div className="etl-stats">
+        <div className="etl-stat">
+          <span>Records Extracted</span>
+          <strong>
+            {result ? result.extractedCount ?? "—" : "—"}
+          </strong>
+        </div>
+
+        <div className="etl-stat">
+          <span>Records Accepted</span>
+          <strong>
+            {result ? result.acceptedCount ?? "—" : "—"}
+          </strong>
+        </div>
+
+        <div className="etl-stat">
+          <span>Records Rejected</span>
+          <strong>
+            {result ? result.rejectedCount ?? "—" : "—"}
+          </strong>
+        </div>
+
+        <div className="etl-stat">
+          <span>Data Quality</span>
+          <strong>{result ? dataQuality : "—"}</strong>
+        </div>
+      </div>
+
+      {/* Empty state */}
+      {!result && !error && (
         <div className="etl-empty">
-          <span>⇄</span>
+          <span className="etl-empty-icon">⇄</span>
           <h4>Ready to process your data</h4>
           <p>
-            Run the pipeline to fetch products from MongoDB through
-            your existing backend API and check their data quality.
+            Select your sales CSV or Excel file, then run the pipeline.
+            The backend will validate and import the dataset.
           </p>
         </div>
       )}
 
-      {hasRun && (
+      {/* Results */}
+      {result && (
         <>
           <div className="etl-results-heading">
             <div>
-              <h4>Data Quality Report</h4>
-              <p>Validation results for the extracted product records.</p>
+              <h4>ETL Import Report</h4>
+              <p>
+                {result.message ||
+                  "The backend has completed processing the uploaded dataset."}
+              </p>
             </div>
 
-            <select
-              value={filter}
-              onChange={(event) => setFilter(event.target.value)}
-              aria-label="Filter ETL records"
-            >
-              <option value="all">All records</option>
-              <option value="clean">Clean records</option>
-              <option value="issues">Records with issues</option>
-            </select>
+            <span className="etl-success-badge">
+              <span>✓</span> Completed
+            </span>
           </div>
 
-          {products.length === 0 ? (
-            <div className="etl-empty">
-              <h4>No products found</h4>
-              <p>Your API returned an empty product list.</p>
-            </div>
-          ) : (
-            <div className="etl-table-wrap">
-              <table className="etl-table">
-                <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Validation</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {visibleProducts.map((product) => (
-                    <tr key={product._etlId}>
-                      <td>{product.name || "—"}</td>
-                      <td>{product.category || "—"}</td>
-                      <td>
-                        {Number.isFinite(product.price)
-                          ? product.price
-                          : "Invalid"}
-                      </td>
-                      <td>
-                        {Number.isFinite(product.stock)
-                          ? product.stock
-                          : "Invalid"}
-                      </td>
-                      <td>
-                        <span
-                          className={`etl-status ${
-                            product._etlClean ? "clean" : "issues"
-                          }`}
-                        >
-                          {product._etlClean
-                            ? "Clean"
-                            : `${product._etlIssues.length} issue(s)`}
-                        </span>
-
-                        {!product._etlClean && (
-                          <p className="etl-issue-text">
-                            {product._etlIssues.join(", ")}
-                          </p>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-
           <div className="etl-complete-note">
-            <strong>Transformation complete</strong>
-            <p>
-              Text fields have been trimmed and numeric fields validated
-              in the in-memory result. Original MongoDB records have not
-              been modified.
-            </p>
+            <div className="etl-complete-icon">✓</div>
+
+            <div>
+              <strong>Transformation complete</strong>
+              <p>
+                {result.acceptedCount ?? 0} records were accepted and{" "}
+                {result.rejectedCount ?? 0} records were rejected.
+                The backend has processed the uploaded dataset.
+              </p>
+            </div>
           </div>
         </>
       )}
