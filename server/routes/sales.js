@@ -411,4 +411,284 @@ router.get("/analytics/bundles", async (req, res) => {
         });
     }
 });
+
+// Descriptive statistics for a selected sales metric
+router.get("/statistics/descriptive", async (req, res) => {
+    try {
+        const allowedMetrics = [
+            "revenue",
+            "profit",
+            "cost",
+            "quantity",
+            "unitPrice",
+            "unitCost",
+        ];
+
+        const metric = req.query.metric || "revenue";
+
+        if (!allowedMetrics.includes(metric)) {
+            return res.status(400).json({
+                message: "Invalid metric selected.",
+                allowedMetrics,
+            });
+        }
+
+        const db = getDB();
+
+        const values = await db.collection("sales")
+            .find(
+                { [metric]: { $type: "number" } },
+                { projection: { [metric]: 1, _id: 0 } }
+            )
+            .toArray();
+
+        const numbers = values
+            .map((row) => row[metric])
+            .filter(Number.isFinite)
+            .sort((a, b) => a - b);
+
+        if (numbers.length === 0) {
+            return res.json({
+                metric,
+                count: 0,
+                message: "No numeric data available for this metric.",
+                statistics: null,
+            });
+        }
+
+        const count = numbers.length;
+        const sum = numbers.reduce((total, value) => total + value, 0);
+        const mean = sum / count;
+
+        const medianOf = (array) => {
+            const length = array.length;
+            const middle = Math.floor(length / 2);
+
+            if (length === 0) return null;
+
+            return length % 2 === 0
+                ? (array[middle - 1] + array[middle]) / 2
+                : array[middle];
+        };
+
+        const median = medianOf(numbers);
+
+        const lowerHalf = numbers.slice(0, Math.floor(count / 2));
+        const upperHalf = numbers.slice(Math.ceil(count / 2));
+
+        const q1 = medianOf(lowerHalf);
+        const q3 = medianOf(upperHalf);
+
+        const squaredDifferences = numbers.reduce(
+            (total, value) => total + Math.pow(value - mean, 2),
+            0
+        );
+
+        const variance = count > 1
+            ? squaredDifferences / (count - 1)
+            : 0;
+
+        const standardDeviation = Math.sqrt(variance);
+
+        const frequency = new Map();
+
+        numbers.forEach((value) => {
+            frequency.set(value, (frequency.get(value) || 0) + 1);
+        });
+
+        const highestFrequency = Math.max(...frequency.values());
+
+        const modes = [...frequency.entries()]
+            .filter(([, frequencyCount]) => frequencyCount === highestFrequency)
+            .map(([value]) => value);
+
+        const isAllUnique = highestFrequency === 1;
+
+        res.json({
+            metric,
+            count,
+            statistics: {
+                mean,
+                median,
+                mode: isAllUnique ? null : modes,
+                minimum: numbers[0],
+                maximum: numbers[count - 1],
+                range: numbers[count - 1] - numbers[0],
+                q1,
+                q3,
+                interquartileRange: q3 - q1,
+                variance,
+                standardDeviation,
+            },
+        });
+    } catch (error) {
+        console.error("Descriptive statistics error:", error);
+
+        res.status(500).json({
+            message: "Failed to calculate descriptive statistics.",
+        });
+    }
+});
+
+// Regression Analysis: predict unitPrice using quantity and unitCost
+router.get("/regression", async (req, res) => {
+  try {
+    const db = getDB();
+
+    const rows = await db.collection("sales").find(
+      {
+        quantity: { $type: "number" },
+        unitCost: { $type: "number" },
+        unitPrice: { $type: "number" },
+      },
+      {
+        projection: {
+          _id: 0,
+          quantity: 1,
+          unitCost: 1,
+          unitPrice: 1,
+        },
+      }
+    ).toArray();
+
+    if (rows.length < 5) {
+      return res.status(400).json({
+        message: "Not enough valid sales records for regression.",
+      });
+    }
+
+    // Deterministic 80/20 train-test split
+    const splitIndex = Math.floor(rows.length * 0.8);
+    const train = rows.slice(0, splitIndex);
+    const test = rows.slice(splitIndex);
+
+    // Multiple linear regression using gradient descent
+    let b0 = 0;
+    let b1 = 0;
+    let b2 = 0;
+
+    const meanPrice =
+      train.reduce((sum, row) => sum + row.unitPrice, 0) / train.length;
+
+    const meanQuantity =
+      train.reduce((sum, row) => sum + row.quantity, 0) / train.length;
+
+    const meanCost =
+      train.reduce((sum, row) => sum + row.unitCost, 0) / train.length;
+
+    const stdQuantity = Math.sqrt(
+      train.reduce((sum, row) => sum + (row.quantity - meanQuantity) ** 2, 0) /
+        train.length
+    ) || 1;
+
+    const stdCost = Math.sqrt(
+      train.reduce((sum, row) => sum + (row.unitCost - meanCost) ** 2, 0) /
+        train.length
+    ) || 1;
+
+    const normalizedTrain = train.map((row) => ({
+      x1: (row.quantity - meanQuantity) / stdQuantity,
+      x2: (row.unitCost - meanCost) / stdCost,
+      y: row.unitPrice,
+    }));
+
+    const learningRate = 0.01;
+    const iterations = 1500;
+    const trainingLoss = [];
+
+    for (let i = 0; i < iterations; i++) {
+      let db0 = 0;
+      let db1 = 0;
+      let db2 = 0;
+
+      for (const row of normalizedTrain) {
+        const prediction = b0 + b1 * row.x1 + b2 * row.x2;
+        const error = prediction - row.y;
+
+        db0 += error;
+        db1 += error * row.x1;
+        db2 += error * row.x2;
+      }
+
+      b0 -= learningRate * (db0 / train.length);
+      b1 -= learningRate * (db1 / train.length);
+      b2 -= learningRate * (db2 / train.length);
+
+      if (i % 100 === 0 || i === iterations - 1) {
+        const mse =
+          normalizedTrain.reduce((sum, row) => {
+            const prediction = b0 + b1 * row.x1 + b2 * row.x2;
+            return sum + (prediction - row.y) ** 2;
+          }, 0) / train.length;
+
+        trainingLoss.push({
+          iteration: i + 1,
+          mse: Number(mse.toFixed(2)),
+        });
+      }
+    }
+
+    const predictions = test.map((row) => {
+      const x1 = (row.quantity - meanQuantity) / stdQuantity;
+      const x2 = (row.unitCost - meanCost) / stdCost;
+
+      const predicted = b0 + b1 * x1 + b2 * x2;
+
+      return {
+        actual: row.unitPrice,
+        predicted: Number(predicted.toFixed(2)),
+      };
+    });
+
+    const actualMean =
+      predictions.reduce((sum, row) => sum + row.actual, 0) /
+      predictions.length;
+
+    const mae =
+      predictions.reduce(
+        (sum, row) => sum + Math.abs(row.actual - row.predicted),
+        0
+      ) / predictions.length;
+
+    const mse =
+      predictions.reduce(
+        (sum, row) => sum + (row.actual - row.predicted) ** 2,
+        0
+      ) / predictions.length;
+
+    const ssTotal = predictions.reduce(
+      (sum, row) => sum + (row.actual - actualMean) ** 2,
+      0
+    );
+
+    const ssResidual = predictions.reduce(
+      (sum, row) => sum + (row.actual - row.predicted) ** 2,
+      0
+    );
+
+    const r2 = ssTotal === 0 ? null : 1 - ssResidual / ssTotal;
+
+    res.json({
+      model: "Multiple Linear Regression",
+      target: "unitPrice",
+      predictors: ["quantity", "unitCost"],
+      totalRecords: rows.length,
+      trainingRecords: train.length,
+      testingRecords: test.length,
+      metrics: {
+        mae: Number(mae.toFixed(2)),
+        rmse: Number(Math.sqrt(mse).toFixed(2)),
+        r2: r2 === null ? null : Number(r2.toFixed(4)),
+      },
+      predictions,
+      trainingLoss,
+    });
+  } catch (error) {
+    console.error("Regression error:", error);
+    res.status(500).json({
+      message: "Failed to run regression analysis.",
+      error: error.message,
+    });
+  }
+});
 module.exports = router;

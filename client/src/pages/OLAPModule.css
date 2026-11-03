@@ -1,0 +1,419 @@
+.olap-module {
+    color: #e8e7f0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.olap-heading,
+.olap-panel-title,
+.olap-results-heading,
+.olap-operation-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.olap-heading h3 {
+    margin: 5px 0 8px;
+    font-size: 24px;
+    font-weight: 650;
+    letter-spacing: -0.5px;
+}
+
+.olap-heading p:not(.olap-eyebrow) {
+    margin: 0;
+    color: #9694a9;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.olap-eyebrow {
+    margin: 0;
+    color: #a78bfa;
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: 1.5px;
+}
+
+.olap-refresh-button,
+.olap-pivot-button {
+    border: 1px solid rgba(167, 139, 250, 0.35);
+    border-radius: 10px;
+    background: rgba(139, 92, 246, 0.12);
+    color: #c4b5fd;
+    padding: 10px 14px;
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.2s ease;
+}
+
+.olap-refresh-button:hover,
+.olap-pivot-button:hover {
+    background: rgba(139, 92, 246, 0.22);
+    border-color: #a78bfa;
+}
+
+.olap-refresh-button:disabled,
+.olap-pivot-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.olap-control-panel,
+.olap-results-panel {
+    border: 1px solid rgba(150, 145, 180, 0.15);
+    background: rgba(22, 21, 34, 0.7);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.olap-panel-title {
+    margin-bottom: 18px;
+}
+
+.olap-panel-title > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.olap-panel-title h4,
+.olap-results-heading h4 {
+    margin: 0;
+    color: #f1effa;
+    font-size: 14px;
+    font-weight: 650;
+}
+
+.olap-panel-icon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: rgba(139, 92, 246, 0.15);
+    color: #c4b5fd;
+    font-size: 17px;
+}
+
+.olap-live-label,
+.olap-result-count {
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    border-radius: 7px;
+    background: rgba(34, 197, 94, 0.08);
+    color: #86efac;
+    padding: 5px 8px;
+    font-size: 9px;
+    font-weight: 750;
+    letter-spacing: 1px;
+}
+
+.olap-control-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.olap-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.olap-field > span,
+.olap-control-label {
+    color: #a5a2b8;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.olap-field select,
+.olap-field input {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 40px;
+    border: 1px solid rgba(150, 145, 180, 0.18);
+    border-radius: 9px;
+    outline: none;
+    background: #171624;
+    color: #e8e7f0;
+    padding: 0 11px;
+    font-size: 12px;
+}
+
+.olap-field select:focus,
+.olap-field input:focus {
+    border-color: rgba(167, 139, 250, 0.7);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.olap-field input::placeholder {
+    color: #656278;
+}
+
+.olap-field select option {
+    background: #171624;
+    color: #e8e7f0;
+}
+
+.olap-metrics-section {
+    margin-top: 20px;
+}
+
+.olap-control-label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.olap-metric-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.olap-metric-option {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid rgba(150, 145, 180, 0.17);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    color: #aaa7bb;
+    padding: 8px 11px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.olap-metric-option.active {
+    border-color: rgba(167, 139, 250, 0.45);
+    background: rgba(139, 92, 246, 0.12);
+    color: #d2c5ff;
+}
+
+.olap-metric-option input {
+    accent-color: #a78bfa;
+    margin: 0;
+}
+
+.olap-clear-button {
+    border: none;
+    background: transparent;
+    color: #a78bfa;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.olap-clear-button:hover {
+    color: #c4b5fd;
+}
+
+.olap-operation-bar {
+    border: 1px solid rgba(150, 145, 180, 0.14);
+    border-radius: 12px;
+    background: rgba(139, 92, 246, 0.045);
+    padding: 15px 17px;
+}
+
+.olap-operation-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.olap-operation-label {
+    display: block;
+    color: #aaa7bb;
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.olap-operation-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.olap-operation-tags span {
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    border-radius: 6px;
+    background: rgba(139, 92, 246, 0.1);
+    color: #c4b5fd;
+    padding: 5px 8px;
+    font-size: 10px;
+}
+
+.olap-operation-buttons {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.olap-operation-button {
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    border-radius: 9px;
+    background: rgba(139, 92, 246, 0.1);
+    color: #c4b5fd;
+    padding: 10px 13px;
+    font-size: 11px;
+    font-weight: 650;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.2s ease;
+}
+
+.olap-operation-button:hover:not(:disabled) {
+    background: rgba(139, 92, 246, 0.22);
+    border-color: #a78bfa;
+}
+
+.olap-operation-button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.olap-results-heading {
+    margin-bottom: 18px;
+}
+
+.olap-results-heading .olap-eyebrow {
+    margin-bottom: 6px;
+}
+
+.olap-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid rgba(150, 145, 180, 0.13);
+    border-radius: 10px;
+}
+
+.olap-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 560px;
+    font-size: 12px;
+}
+
+.olap-table th {
+    background: rgba(139, 92, 246, 0.08);
+    color: #aaa7c0;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-align: left;
+    padding: 13px 14px;
+    white-space: nowrap;
+}
+
+.olap-table td {
+    border-top: 1px solid rgba(150, 145, 180, 0.1);
+    color: #d4d1e2;
+    padding: 12px 14px;
+    white-space: nowrap;
+}
+
+.olap-table tbody tr:hover {
+    background: rgba(139, 92, 246, 0.045);
+}
+
+.olap-number-cell {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.olap-table th:nth-last-child(-n + 5) {
+    text-align: right;
+}
+
+.olap-table tfoot td {
+    border-top: 1px solid rgba(167, 139, 250, 0.25);
+    background: rgba(139, 92, 246, 0.07);
+    color: #c4b5fd;
+    font-weight: 750;
+}
+
+.olap-total-label {
+    text-align: left;
+}
+
+.olap-empty-state {
+    display: grid;
+    place-items: center;
+    min-height: 150px;
+    border: 1px dashed rgba(150, 145, 180, 0.2);
+    border-radius: 10px;
+    color: #8d899f;
+    font-size: 12px;
+    text-align: center;
+    padding: 20px;
+}
+
+.olap-error {
+    border: 1px solid rgba(248, 113, 113, 0.25);
+    border-radius: 12px;
+    background: rgba(239, 68, 68, 0.07);
+    color: #fca5a5;
+    padding: 16px;
+    font-size: 12px;
+}
+
+.olap-error p {
+    margin: 7px 0 12px;
+    color: #c9a2a2;
+}
+
+.olap-error button {
+    border: 1px solid rgba(248, 113, 113, 0.3);
+    border-radius: 7px;
+    background: transparent;
+    color: #fca5a5;
+    padding: 7px 10px;
+    cursor: pointer;
+}
+
+.olap-footnote {
+    color: #777489;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+    .olap-heading,
+    .olap-operation-bar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .olap-control-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .olap-control-panel,
+    .olap-results-panel {
+        padding: 15px;
+    }
+
+    .olap-refresh-button,
+    .olap-pivot-button {
+        width: 100%;
+    }
+
+    .olap-operation-buttons {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .olap-operation-buttons button {
+        width: 100%;
+    }
+}

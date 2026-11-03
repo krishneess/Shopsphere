@@ -1,8 +1,11 @@
-
 import { useState } from "react";
 import "./Functions.css";
+
 import ETLModule from "./ETLModule";
 import EDAModule from "./EDAModule";
+import OLAPModule from "./OLAPModule";
+import StatsModule from "./StatsModule";
+import RegressionModule from "./RegressionModule";
 
 const modules = [
     {
@@ -40,6 +43,15 @@ const modules = [
         description:
             "Study relationships between variables and apply suitable statistical tests.",
         tags: ["Correlation", "Hypothesis Testing", "Statistics"],
+    },
+    {
+        id: "regression",
+        number: "05",
+        icon: "↗",
+        title: "Regression Analysis",
+        description:
+            "Predict unit prices using multiple linear regression and evaluate model performance.",
+        tags: ["Regression", "Gradient Descent", "Model Evaluation"],
     },
 ];
 
@@ -93,7 +105,7 @@ function Functions() {
                     </div>
 
                     <span className="functions-module-count">
-                        04 MODULES
+                        05 MODULES
                     </span>
                 </div>
 
@@ -102,8 +114,9 @@ function Functions() {
                         <button
                             type="button"
                             key={module.id}
-                            className={`functions-module-card ${activeModule === module.id ? "selected" : ""
-                                }`}
+                            className={`functions-module-card ${
+                                activeModule === module.id ? "selected" : ""
+                            }`}
                             onClick={() =>
                                 setActiveModule((current) =>
                                     current === module.id ? null : module.id
@@ -147,7 +160,6 @@ function Functions() {
                 </div>
             </section>
 
-
             {selectedModule && (
                 <section className="functions-module-detail">
                     <div className="functions-detail-heading">
@@ -155,8 +167,10 @@ function Functions() {
                             <p className="functions-eyebrow">
                                 MODULE {selectedModule.number}
                             </p>
+
                             <h3>{selectedModule.title}</h3>
                         </div>
+
                         <button
                             type="button"
                             className="functions-close-button"
@@ -171,24 +185,20 @@ function Functions() {
                         <ETLModule />
                     ) : selectedModule.id === "eda" ? (
                         <EDAModule />
-                    ) : (
-                        <>
-                            <p className="functions-detail-description">
-                                {selectedModule.description}
-                            </p>
-
-                            <div className="functions-detail-notice">
-                                <strong>Module workspace</strong>
-                                <p>
-                                    This module will be implemented in the next development step.
-                                </p>
-                            </div>
-                        </>
-                    )}
+                    ) : selectedModule.id === "olap" ? (
+                        <OLAPModule />
+                    ) : selectedModule.id === "stats" ? (
+                        <StatsModule />
+                    ) : selectedModule.id === "regression" ? (
+                        <RegressionModule />
+                    ) : null}
 
                     <section className="functions-workflow">
                         <div className="functions-workflow-heading">
-                            <p className="functions-eyebrow">THE BIG PICTURE</p>
+                            <p className="functions-eyebrow">
+                                THE BIG PICTURE
+                            </p>
+
                             <h3>How the pieces work together</h3>
                         </div>
 
@@ -196,7 +206,7 @@ function Functions() {
                             <div className="functions-workflow-step">
                                 <span>01</span>
                                 <strong>Application Data</strong>
-                                <p>Products and inventory stored in MongoDB.</p>
+                                <p>Products and sales stored in MongoDB.</p>
                             </div>
 
                             <div className="functions-workflow-arrow">→</div>
