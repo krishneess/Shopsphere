@@ -5,6 +5,8 @@ import "./App.css";
 import Inventory from "./pages/Inventory";
 import Functions from "./pages/Functions";
 import AccountManagement from "./pages/AccountManagement";
+import Orders from "./pages/Orders";
+import Dashboard from "./pages/Dashboard";
 
 const API_BASE = "http://localhost:5000/api";
 
@@ -32,30 +34,17 @@ function App() {
     fetchProducts();
   }, []);
 
+  // Keep the page background (html/body) in sync with the theme so no
+  // area outside .app-shell (overscroll, gaps) stays white in dark mode.
+  useEffect(() => {
+    document.documentElement.classList.toggle("theme-dark", darkMode);
+  }, [darkMode]);
+
   function retryProductLoad() {
     setLoadingProducts(true);
     setProductError("");
     fetchProducts();
   }
-
-  const totalProducts = products.length;
-
-  const inventoryValue = products.reduce(
-    (total, product) =>
-      total +
-      Number(product.price || 0) * Number(product.stock || 0),
-    0
-  );
-
-  const lowStockItems = products.filter(
-    (product) =>
-      Number(product.stock || 0) > 0 &&
-      Number(product.stock || 0) <= 5
-  ).length;
-
-  const outOfStockItems = products.filter(
-    (product) => Number(product.stock || 0) === 0
-  ).length;
 
   const navigation = [
     { name: "Dashboard", icon: "▦" },
@@ -63,13 +52,6 @@ function App() {
     { name: "Orders", icon: "🧾" },
     { name: "Functions", icon: "ƒ" },
   ];
-
-  const formatCurrency = (amount) =>
-    amount.toLocaleString("en-IN", {
-      style: "currency",
-      currency: "INR",
-      maximumFractionDigits: 2,
-    });
 
   return (
     <div className={`app-shell ${darkMode ? "dark-mode" : ""}`}>
@@ -137,14 +119,13 @@ function App() {
         </header>
 
         <section className="page-content">
+          {activePage !== "Dashboard" && (
           <div className="page-heading">
             <div>
               <p className="eyebrow">RETAIL MANAGEMENT</p>
 
               <h1>
-                {activePage === "Dashboard"
-                  ? "Good day, Manager 👋"
-                  : activePage}
+                {activePage}
               </h1>
 
               <p className="subtitle">
@@ -154,177 +135,24 @@ function App() {
 
             <span className="date-label">ShopSphere Workspace</span>
           </div>
+          )}
 
           {/* DASHBOARD */}
           {activePage === "Dashboard" && (
-            <>
-              {productError && (
-                <div className="alert alert-warning" role="alert">
-                  {productError} Check that the backend server is running.
-                  <button
-                    className="btn btn-sm btn-outline-dark ms-3"
-                    onClick={retryProductLoad}
-                  >
-                    Retry
-                  </button>
-                </div>
-              )}
-
-              <div className="stats-grid">
-                <div className="stat-card">
-                  <span className="stat-icon purple">▦</span>
-                  <p>Total Products</p>
-                  <h2>
-                    {loadingProducts ? "..." : totalProducts}
-                  </h2>
-                  <small>Products in your inventory</small>
-                </div>
-
-                <div className="stat-card">
-                  <span className="stat-icon green">₹</span>
-                  <p>Inventory Value</p>
-                  <h2>
-                    {loadingProducts
-                      ? "..."
-                      : formatCurrency(inventoryValue)}
-                  </h2>
-                  <small>Price multiplied by available stock</small>
-                </div>
-
-                <div className="stat-card">
-                  <span className="stat-icon orange">!</span>
-                  <p>Low Stock Items</p>
-                  <h2>
-                    {loadingProducts ? "..." : lowStockItems}
-                  </h2>
-                  <small>Products with 1–5 units remaining</small>
-                </div>
-
-                <div className="stat-card">
-                  <span className="stat-icon blue">↗</span>
-                  <p>Out of Stock</p>
-                  <h2>
-                    {loadingProducts ? "..." : outOfStockItems}
-                  </h2>
-                  <small>Products with zero units available</small>
-                </div>
-              </div>
-
-              <div className="content-card">
-                <div className="section-heading">
-                  <div>
-                    <h3>Inventory Overview</h3>
-                    <p>Your store inventory at a glance.</p>
-                  </div>
-
-                  <button
-                    className="primary-button"
-                    onClick={() => setActivePage("Inventory")}
-                  >
-                    View Inventory →
-                  </button>
-                </div>
-
-                {loadingProducts ? (
-                  <div className="empty-state">
-                    <p>Loading inventory data...</p>
-                  </div>
-                ) : products.length === 0 ? (
-                  <div className="empty-state">
-                    <div className="empty-icon">📦</div>
-                    <h4>Your inventory workspace</h4>
-                    <p>
-                      Add your first product to start tracking stock
-                      and inventory value.
-                    </p>
-
-                    <button
-                      className="primary-button"
-                      onClick={() => setActivePage("Inventory")}
-                    >
-                      Open Inventory
-                    </button>
-                  </div>
-                ) : (
-                  <div className="table-responsive">
-                    <table className="table align-middle">
-                      <thead>
-                        <tr>
-                          <th>Product</th>
-                          <th>Category</th>
-                          <th>Price</th>
-                          <th>Stock</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        {products.slice(0, 5).map((product) => {
-                          const stock = Number(product.stock || 0);
-                          const status =
-                            stock === 0
-                              ? "Out of stock"
-                              : stock <= 5
-                                ? "Low stock"
-                                : "In stock";
-
-                          return (
-                            <tr key={product._id}>
-                              <td>
-                                <strong>{product.name}</strong>
-                              </td>
-                              <td>{product.category}</td>
-                              <td>{formatCurrency(Number(product.price || 0))}</td>
-                              <td>{stock}</td>
-                              <td>
-                                <span
-                                  className={`stock-status ${
-                                    stock === 0
-                                      ? "out-of-stock"
-                                      : stock <= 5
-                                        ? "low-stock"
-                                        : "in-stock"
-                                  }`}
-                                >
-                                  {status}
-                                </span>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-
-                    <button
-                      className="primary-button"
-                      onClick={() => setActivePage("Inventory")}
-                    >
-                      Manage All Products →
-                    </button>
-                  </div>
-                )}
-              </div>
-            </>
+            <Dashboard
+              products={products}
+              loadingProducts={loadingProducts}
+              productError={productError}
+              onRetry={retryProductLoad}
+              onNavigate={setActivePage}
+            />
           )}
 
           {/* INVENTORY */}
           {activePage === "Inventory" && <Inventory />}
 
-{/* ORDERS PLACEHOLDER */}
-{activePage === "Orders" && (
-  <div className="content-card page-placeholder">
-    <div className="empty-icon">🧾</div>
-    <h3>Orders</h3>
-    <p>Order management will be implemented next.</p>
-
-    <button
-      className="primary-button"
-      onClick={() => setActivePage("Dashboard")}
-    >
-      Back to Dashboard
-    </button>
-  </div>
-)}
+{/* ORDERS */}
+{activePage === "Orders" && <Orders />}
 
 {/* FUNCTIONS — ANALYTICS & INTELLIGENCE LAB */}
 {activePage === "Functions" && <Functions />}

@@ -140,6 +140,13 @@ button {
 
 .sidebar-profile {
   width: 100%;
+  /* <button> defaults to a white "buttonface" background, which showed as a
+     white block at the bottom-left of the sidebar in dark mode. */
+  background: transparent;
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 0;
+  border-radius: 0;
   color: inherit;
   text-align: left;
   cursor: pointer;
@@ -479,6 +486,12 @@ button {
 }
 
 /* Dark mode */
+
+html.theme-dark,
+html.theme-dark body {
+  background: #191919;
+  color-scheme: dark;
+}
 
 .app-shell.dark-mode {
   --page: #191919;
