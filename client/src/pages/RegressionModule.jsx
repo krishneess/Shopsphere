@@ -12,9 +12,10 @@ import {
     Line,
 } from "recharts";
 
+import api from "../api";
 import "./RegressionModule.css";
 
-const API_URL = "http://localhost:5000/api/sales/regression";
+const API_URL = "/sales/regression";
 
 export default function RegressionModule() {
     const [data, setData] = useState(null);
@@ -22,19 +23,14 @@ export default function RegressionModule() {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        fetch(API_URL)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Unable to load regression results.");
-                }
-
-                return response.json();
-            })
-            .then((result) => {
-                setData(result);
-            })
+        api.get(API_URL)
+            .then((response) => setData(response.data))
             .catch((err) => {
-                setError(err.message);
+                setError(
+                    err.response?.data?.message ||
+                        err.message ||
+                        "Unable to load regression results."
+                );
             })
             .finally(() => {
                 setLoading(false);

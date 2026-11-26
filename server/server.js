@@ -12,6 +12,7 @@ const olapRoutes = require("./routes/olap");
 const { connectDB } = require("./config");
 const productRoutes = require("./routes/products");
 const salesRoutes = require("./routes/sales");
+const accountRoutes = require("./routes/account");
 
 
 
@@ -21,14 +22,30 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use("/api/olap", olapRoutes);
 
 // Diagnostic log
 console.log("Product routes loaded");
 
+app.get("/", (req, res) => {
+    res.json({
+        message: "ShopSphere API is running!",
+        status: "success"
+    });
+});
+
+app.get("/api/health", (req, res) => {
+    res.json({
+        server: "running",
+        database: "connected"
+    });
+});
+
+app.use("/api/olap", olapRoutes);
+
 // Product API routes
 app.use("/api/products", productRoutes);
 app.use("/api/sales", salesRoutes);
+app.use("/api/account", accountRoutes);
 
 app.get("/api/products/:id", async (req, res) => {
     try {
@@ -62,21 +79,37 @@ app.get("/api/products/:id", async (req, res) => {
 });
 
 
-// Root route
-app.get("/", (req, res) => {
-    res.json({
-        message: "ShopSphere API is running!",
-        status: "success"
-    });
+app.get("/api/products/:id", async (req, res) => {
+    try {
+        const { ObjectId } = require("mongodb");
+        const { getDB } = require("./config");
+        const { id } = req.params;
+
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).json({
+                message: "Invalid product ID"
+            });
+        }
+
+        const product = await getDB()
+            .collection("products")
+            .findOne({ _id: new ObjectId(id) });
+
+        if (!product) {
+            return res.status(404).json({
+                message: "Product not found"
+            });
+        }
+
+        return res.status(200).json(product);
+    } catch (error) {
+        console.error("GET product by ID error:", error);
+        return res.status(500).json({
+            message: "Failed to fetch product"
+        });
+    }
 });
 
-// Health check
-app.get("/api/health", (req, res) => {
-    res.json({
-        server: "running",
-        database: "connected"
-    });
-});
 
 // Start server after connecting to MongoDB
 async function startServer() {

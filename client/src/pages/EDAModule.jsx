@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import api from "../api";
 import "./EDAModule.css";
 
-const API_BASE = "http://localhost:5000/api/sales/analytics";
+const API_BASE = "/sales/analytics";
 
 const ENDPOINTS = {
   summary: `${API_BASE}/summary`,
@@ -233,19 +234,10 @@ function EDAModule() {
 
     try {
       const responses = await Promise.all(
-        Object.values(ENDPOINTS).map((url) => fetch(url))
+        Object.values(ENDPOINTS).map((url) => api.get(url))
       );
-
-      const failedResponse = responses.find((response) => !response.ok);
-
-      if (failedResponse) {
-        throw new Error(
-          `Analytics API returned HTTP ${failedResponse.status}`
-        );
-      }
-
-      const [summary, trends, products, bundles] = await Promise.all(
-        responses.map((response) => response.json())
+      const [summary, trends, products, bundles] = responses.map(
+        (response) => response.data
       );
 
       setData({
@@ -260,7 +252,7 @@ function EDAModule() {
       });
     } catch (err) {
       setError(
-        `${err.message}. Check that your backend is running on port 5000.`
+        `${err.response?.data?.message || err.message}. Check that your backend is running on port 5000.`
       );
     } finally {
       setLoading(false);

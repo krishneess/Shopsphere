@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import api from "../api";
 import "./OLAPModule.css";
 
-const API_URL = "http://localhost:5000/api/olap/cube";
+const API_URL = "/olap/cube";
 
 const DIMENSION_OPTIONS = [
     { value: "date", label: "Date" },
@@ -93,27 +94,15 @@ function OLAPModule() {
                 params.set("returned", returned);
             }
 
-            const response = await fetch(
-                `${API_URL}?${params.toString()}`
-            );
-
-            if (!response.ok) {
-                const errorData = await response
-                    .json()
-                    .catch(() => ({}));
-
-                throw new Error(
-                    errorData.message || "Unable to load OLAP data."
-                );
-            }
-
-            const data = await response.json();
+            const response = await api.get(`${API_URL}?${params.toString()}`);
+            const data = response.data;
 
             setResults(Array.isArray(data.results) ? data.results : []);
             setHasLoaded(true);
         } catch (err) {
             setError(
-                err.message ||
+                err.response?.data?.message ||
+                    err.message ||
                     "Could not connect to the OLAP API. Check that the backend is running."
             );
         } finally {

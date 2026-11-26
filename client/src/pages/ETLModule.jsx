@@ -1,7 +1,8 @@
 import { useState } from "react";
+import api from "../api";
 import "./ETLModule.css";
 
-const API_URL = "http://localhost:5000/api/sales/upload";
+const API_URL = "/sales/upload";
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 function ETLModule() {
@@ -71,25 +72,12 @@ function ETLModule() {
       // Must match the upload field expected by the backend.
       formData.append("salesFile", file);
 
-      const response = await fetch(API_URL, {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        throw new Error(
-          data.message ||
-            data.error ||
-            `Backend returned HTTP ${response.status}`
-        );
-      }
-
-      setResult(data);
+      const response = await api.post(API_URL, formData);
+      setResult(response.data);
     } catch (err) {
       setError(
-        `${err.message}. Make sure your backend is running on port 5000.`
+        err.response?.data?.message ||
+          `${err.message}. Make sure your backend is running on port 5000.`
       );
     } finally {
       setLoading(false);

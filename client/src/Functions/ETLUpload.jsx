@@ -1,7 +1,8 @@
 import { useState } from "react";
+import api from "../api";
 import "./ETLUpload.css";
 
-const API_URL = "http://localhost:5000/api/sales/upload";
+const API_URL = "/sales/upload";
 
 export default function ETLUpload() {
     const [file, setFile] = useState(null);
@@ -56,22 +57,11 @@ export default function ETLUpload() {
             // Must match multer's upload.single("salesFile")
             formData.append("salesFile", file);
 
-            const response = await fetch(API_URL, {
-                method: "POST",
-                body: formData,
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(
-                    data.message || "CSV upload failed. Please try again."
-                );
-            }
-
-            setResult(data);
+            const response = await api.post(API_URL, formData);
+            setResult(response.data);
         } catch (err) {
             setError(
+                err.response?.data?.message ||
                 err.message ||
                 "Could not connect to the backend. Check that the server is running."
             );

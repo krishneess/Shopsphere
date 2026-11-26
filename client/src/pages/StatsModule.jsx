@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import api from "../api";
 import "./StatsModule.css";
 
-const API_BASE = "http://localhost:5000/api/sales";
+const API_BASE = "/sales";
 
 const metrics = [
     { value: "revenue", label: "Revenue" },
@@ -67,24 +68,16 @@ function StatsModule() {
             setData(null);
 
             try {
-                const response = await fetch(
+                const response = await api.get(
                     `${API_BASE}/statistics/descriptive?metric=${metric}`,
                     { signal: controller.signal }
                 );
-
-                const result = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(
-                        result.message || "Could not load statistics."
-                    );
-                }
-
-                setData(result);
+                setData(response.data);
             } catch (err) {
-                if (err.name !== "AbortError") {
+                if (err.name !== "AbortError" && err.name !== "CanceledError") {
                     setError(
-                        err.message ||
+                        err.response?.data?.message ||
+                            err.message ||
                             "Unable to connect to the statistics API."
                     );
                 }

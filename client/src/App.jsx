@@ -1,10 +1,12 @@
 
 import { useState, useEffect } from "react";
-import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Inventory from "./pages/Inventory";
 import Functions from "./pages/Functions";
+import AccountManagement from "./pages/AccountManagement";
+
+const API_BASE = "http://localhost:5000/api";
 
 function App() {
   const [activePage, setActivePage] = useState("Dashboard");
@@ -13,27 +15,28 @@ function App() {
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [productError, setProductError] = useState("");
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
-    setLoadingProducts(true);
-    setProductError("");
-
+  async function fetchProducts() {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/products"
-      );
-
-      setProducts(response.data);
+      const response = await fetch(`${API_BASE}/products`);
+      const data = await response.json();
+      setProducts(data);
     } catch (error) {
       console.error("Failed to fetch products:", error);
       setProductError("Unable to load inventory data.");
     } finally {
       setLoadingProducts(false);
     }
-  };
+  }
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  function retryProductLoad() {
+    setLoadingProducts(true);
+    setProductError("");
+    fetchProducts();
+  }
 
   const totalProducts = products.length;
 
@@ -44,8 +47,6 @@ function App() {
     0
   );
 
-  // Keep the dashboard threshold consistent with the inventory page:
-  // stock from 1 to 5 is low; zero stock is out of stock.
   const lowStockItems = products.filter(
     (product) =>
       Number(product.stock || 0) > 0 &&
@@ -93,13 +94,18 @@ function App() {
           </button>
         ))}
 
-        <div className="sidebar-bottom">
-          <div className="avatar">KR</div>
+        <button
+          className="sidebar-bottom sidebar-profile"
+          type="button"
+          onClick={() => setActivePage("Account Management")}
+          aria-label="Open account management"
+        >
+          <div className="avatar">SM</div>
           <div>
             <strong>Store Manager</strong>
-            <small>Administrator</small>
+            <small>Store Manager</small>
           </div>
-        </div>
+        </button>
       </aside>
 
       <main className="main-content">
@@ -157,7 +163,7 @@ function App() {
                   {productError} Check that the backend server is running.
                   <button
                     className="btn btn-sm btn-outline-dark ms-3"
-                    onClick={fetchProducts}
+                    onClick={retryProductLoad}
                   >
                     Retry
                   </button>
@@ -322,6 +328,12 @@ function App() {
 
 {/* FUNCTIONS — ANALYTICS & INTELLIGENCE LAB */}
 {activePage === "Functions" && <Functions />}
+
+          {activePage === "Account Management" && (
+            <AccountManagement
+              onBack={() => setActivePage("Dashboard")}
+            />
+          )}
         </section>
       </main>
     </div>

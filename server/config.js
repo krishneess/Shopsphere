@@ -33,4 +33,12 @@ function getDB() {
     return db;
 }
 
-module.exports = { connectDB, getDB };
+async function closeDB() {
+    if (!client) return;
+
+    await client.close();
+    client = undefined;
+    db = undefined;
+}
+
+module.exports = { connectDB, getDB, closeDB };

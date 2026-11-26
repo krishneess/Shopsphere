@@ -1,9 +1,9 @@
 
 import { useEffect, useMemo, useState } from "react";
-import axios from "axios";
+import api from "../api";
 import "./Inventory.css";
 
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = "/products";
 
 const emptyProduct = {
   name: "",
@@ -29,7 +29,7 @@ function Inventory() {
   async function fetchProducts() {
     try {
       setError("");
-      const response = await axios.get(API_URL);
+      const response = await api.get(API_URL);
       setProducts(response.data);
     } catch (err) {
       setError(
@@ -83,9 +83,9 @@ function Inventory() {
 
     try {
       if (editingId) {
-        await axios.put(`${API_URL}/${editingId}`, payload);
+        await api.put(`${API_URL}/${editingId}`, payload);
       } else {
-        await axios.post(API_URL, payload);
+        await api.post(API_URL, payload);
       }
 
       setShowForm(false);
@@ -110,7 +110,7 @@ function Inventory() {
 
     try {
       setError("");
-      await axios.delete(`${API_URL}/${product._id}`);
+      await api.delete(`${API_URL}/${product._id}`);
       await fetchProducts();
     } catch (err) {
       setError(
