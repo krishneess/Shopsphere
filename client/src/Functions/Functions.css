@@ -417,3 +417,9 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (min-width: 1501px) {
+  .functions-module-card:last-child:nth-child(3n + 1) {
+    grid-column: 1 / -1;
+  }
+}

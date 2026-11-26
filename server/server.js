@@ -15,6 +15,7 @@ const salesRoutes = require("./routes/sales");
 const accountRoutes = require("./routes/account");
 const regressionRoutes = require("./routes/regression");
 const miningRoutes = require("./routes/mining");
+const hypothesisRoutes = require("./routes/hypothesis");
 
 
 
@@ -50,6 +51,7 @@ app.use("/api/sales", salesRoutes);
 app.use("/api/account", accountRoutes);
 app.use("/api/regression", regressionRoutes);
 app.use("/api/mining", miningRoutes);
+app.use("/api/hypothesis", hypothesisRoutes);
 
 app.get("/api/products/:id", async (req, res) => {
     try {

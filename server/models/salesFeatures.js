@@ -94,7 +94,7 @@ function buildDataset(rows, targetKey) {
         };
     });
 
-    return { dataset, medianProfit, medianRevenue };
+    return { dataset, usable, medianProfit, medianRevenue };
 }
 
 module.exports = { ATTRIBUTES, TARGETS, buildDataset };

@@ -10,6 +10,7 @@ import MultipleRegression from "./MultipleRegression/MultipleRegression";
 import AssociationRules from "./AssociationRules/AssociationRules";
 import GainRatio from "./GainRatio/GainRatio";
 import GiniIndex from "./GiniIndex/GiniIndex";
+import UpdatedStatistics from "./UpdatedStatistics/UpdatedStatistics";
 
 const modules = [
     {
@@ -92,6 +93,15 @@ const modules = [
         description:
             "Measure class impurity and pick the split that reduces it the most.",
         tags: ["Impurity", "Gini Gain", "CART"],
+    },
+    {
+        id: "updated-stats",
+        number: "10",
+        icon: "σ",
+        title: "Updated Statistical Analysis",
+        description:
+            "Run Z, t, F, ANOVA and chi-square hypothesis tests on your sales data with the decision worked out for you.",
+        tags: ["Z-test", "T-test", "F-test", "Chi-square"],
     },
 ];
 
@@ -247,6 +257,8 @@ function Functions() {
                         <GainRatio />
                     ) : selectedModule.id === "gini" ? (
                         <GiniIndex />
+                    ) : selectedModule.id === "updated-stats" ? (
+                        <UpdatedStatistics />
                     ) : null}
 
                     <section className="functions-workflow">

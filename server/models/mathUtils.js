@@ -152,6 +152,8 @@ function correlation(xs, ys) {
 }
 
 module.exports = {
+    logGamma,
+    incompleteBeta,
     mean,
     round,
     tTwoSidedP,
