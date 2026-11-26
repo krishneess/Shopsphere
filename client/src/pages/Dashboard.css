@@ -639,7 +639,7 @@
 
 .db-modules {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
 
@@ -705,7 +705,8 @@
 }
 
 .db-metric {
-  font-size: 26px;
+  font-size: 24px;
+  overflow-wrap: anywhere;
   font-weight: 650;
   letter-spacing: -0.7px;
   line-height: 1.1;
@@ -759,20 +760,6 @@
 
 /* Responsive */
 
-@media (max-width: 1600px) {
-  .db-modules {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-
-  .db-module {
-    grid-column: span 2;
-  }
-
-  .db-module:nth-child(n + 4) {
-    grid-column: span 3;
-  }
-}
-
 @media (max-width: 1200px) {
   .db-hero {
     grid-template-columns: 1fr;
@@ -790,12 +777,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .db-module,
-  .db-module:nth-child(n + 4) {
-    grid-column: auto;
-  }
-
-  .db-module:last-child {
+  .db-module:last-child:nth-child(odd) {
     grid-column: 1 / -1;
   }
 }
@@ -814,9 +796,6 @@
     grid-template-columns: 1fr;
   }
 
-  .db-module:last-child {
-    grid-column: auto;
-  }
 
   .db-card {
     padding: 20px 16px;

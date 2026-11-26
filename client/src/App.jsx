@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Inventory from "./pages/Inventory";
-import Functions from "./pages/Functions";
+import Functions from "./Functions/Functions";
 import AccountManagement from "./pages/AccountManagement";
 import Orders from "./pages/Orders";
 import Dashboard from "./pages/Dashboard";

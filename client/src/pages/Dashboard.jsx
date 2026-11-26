@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from "recharts";
 import api from "../api";
+import useApi from "../Functions/shared/useApi";
 import {
   ORDER_STATUSES,
   formatDate,
@@ -131,6 +132,12 @@ function Dashboard({ products, loadingProducts, productError, onRetry, onNavigat
       active = false;
     };
   }, []);
+
+  // Live results from the analytics modules (Functions 05-09)
+  const simple = useApi("/regression/simple", { x: "unitCost", y: "unitPrice" }).data;
+  const multiple = useApi("/regression/multiple", { y: "unitPrice", x: "quantity,unitCost" }).data;
+  const assoc = useApi("/mining/association", { level: "product", minSupport: 0.03, minConfidence: 0.3 }).data;
+  const tree = useApi("/mining/decision-metrics", { target: "profitLevel" }).data;
 
   const orderStats = summarize(orders);
 
@@ -311,11 +318,45 @@ function Dashboard({ products, loadingProducts, productError, onRetry, onNavigat
         : "Add products to compute",
     },
     {
-      id: "regression",
+      id: "simple-regression",
       icon: "↗",
-      title: "Regression Analysis",
-      metric: inventory.r == null ? dash : inventory.r.toFixed(2),
-      caption: "Price ↔ stock correlation (r)",
+      title: "Simple Linear Regression",
+      metric: simple ? `R² ${simple.metrics.r2.toFixed(3)}` : dash,
+      caption: simple
+        ? `${simple.target.label} = ${simple.coefficients.intercept.toFixed(0)} + ${simple.coefficients.slope.toFixed(2)} × ${simple.predictor.label}`
+        : "Needs sales data",
+    },
+    {
+      id: "multiple-regression",
+      icon: "⩘",
+      title: "Multiple Linear Regression",
+      metric: multiple ? `Adj. R² ${multiple.metrics.adjustedR2.toFixed(3)}` : dash,
+      caption: multiple
+        ? `${multiple.target.label} from ${multiple.predictors.map((p) => p.label).join(" + ")}`
+        : "Needs sales data",
+    },
+    {
+      id: "association",
+      icon: "⛓",
+      title: "Association Rule Mining",
+      metric: assoc ? `${assoc.rules.length} rules` : dash,
+      caption: assoc?.rules[0]
+        ? `Top: ${assoc.rules[0].antecedent.join(", ")} → ${assoc.rules[0].consequent.join(", ")} (lift ${assoc.rules[0].lift.toFixed(2)})`
+        : "Apriori on order baskets",
+    },
+    {
+      id: "gain-ratio",
+      icon: "⑂",
+      title: "Gain Ratio",
+      metric: tree ? [...tree.attributes].sort((a, b) => b.gainRatio - a.gainRatio)[0].attribute : dash,
+      caption: tree ? "Best split attribute for profit level" : "Needs sales data",
+    },
+    {
+      id: "gini",
+      icon: "◐",
+      title: "Gini Index",
+      metric: tree ? [...tree.attributes].sort((a, b) => a.weightedGini - b.weightedGini)[0].attribute : dash,
+      caption: tree ? "Lowest weighted Gini for profit level" : "Needs sales data",
     },
   ];
 

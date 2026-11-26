@@ -1,0 +1,615 @@
+/* Shared styling for the statistical & data-mining modules (Functions 05-09) */
+
+.fx {
+  --fx-good: #3f9a6b;
+  --fx-warn: #d9962f;
+  --fx-bad: #d4635f;
+
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: 100%;
+  color: var(--text);
+}
+
+.dark-mode .fx {
+  --fx-good: #6cc08f;
+  --fx-warn: #e8b25f;
+  --fx-bad: #e88a86;
+}
+
+.fx * {
+  box-sizing: border-box;
+}
+
+.fx-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.fx-eyebrow {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+}
+
+.fx-head h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 650;
+  letter-spacing: -0.7px;
+}
+
+.fx-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.fx-sub--lead {
+  margin-top: 0;
+  font-size: 14px;
+}
+
+.fx-sub {
+  max-width: 720px;
+  margin: 10px 0 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.fx-badge {
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+/* Controls */
+
+.fx-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px 22px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.fx-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 180px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.fx-field select,
+.fx-field input[type="number"],
+.fx-field input[type="text"] {
+  padding: 9px 11px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 450;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.fx-field select:focus,
+.fx-field input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.fx-field input[type="range"] {
+  width: 220px;
+  accent-color: var(--accent);
+}
+
+.fx-range-value {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.fx-segmented {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--border-strong);
+  border-radius: 9px;
+  background: var(--surface-hover);
+}
+
+.fx-segmented button {
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.fx-segmented button.active {
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.fx-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fx-chip {
+  padding: 7px 13px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 550;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.fx-chip:hover {
+  background: var(--surface-hover);
+}
+
+.fx-chip.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 650;
+}
+
+.fx-chip:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Hero equation */
+
+.fx-equation {
+  padding: 22px 26px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  background: var(--accent-soft);
+}
+
+.fx-equation span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+}
+
+.fx-equation code {
+  display: block;
+  color: var(--text);
+  font-family: "Cambria Math", "STIX Two Math", Georgia, serif;
+  font-size: clamp(18px, 2vw, 25px);
+  font-weight: 600;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* KPI strip */
+
+.fx-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 16px;
+}
+
+.fx-kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.fx-kpi span {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.fx-kpi strong {
+  font-size: 24px;
+  font-weight: 650;
+  letter-spacing: -0.6px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.fx-kpi small {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+/* Cards & grids */
+
+.fx-card {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.fx-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.fx-card-head h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.2px;
+}
+
+.fx-card-head p {
+  margin: 6px 0 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.fx-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.fx-grid-2--wide {
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+}
+
+/* Tables */
+
+.fx-table-wrap {
+  overflow-x: auto;
+}
+
+.fx-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.fx-table th {
+  padding: 0 14px 10px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.4px;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.fx-table td {
+  padding: 12px 14px 12px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: middle;
+}
+
+.fx-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.fx-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.fx-table th.num {
+  text-align: right;
+}
+
+.fx-table tr.clickable {
+  cursor: pointer;
+}
+
+.fx-table tr.clickable:hover td {
+  background: var(--surface-hover);
+}
+
+.fx-table tr.selected td {
+  background: var(--accent-soft);
+}
+
+.fx-table .best td:first-child::after {
+  content: "BEST";
+  margin-left: 8px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+}
+
+.dark-mode .fx-table .best td:first-child::after {
+  color: #211f30;
+}
+
+.fx-sig {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.fx-sig.yes {
+  background: color-mix(in srgb, var(--fx-good) 16%, var(--surface));
+  color: var(--fx-good);
+}
+
+.fx-sig.no {
+  background: color-mix(in srgb, var(--fx-warn) 18%, var(--surface));
+  color: var(--fx-warn);
+}
+
+.fx-sig.bad {
+  background: color-mix(in srgb, var(--fx-bad) 16%, var(--surface));
+  color: var(--fx-bad);
+}
+
+/* Worked calculation */
+
+.fx-steps {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.fx-steps li {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  counter-increment: step;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.fx-steps li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.fx-steps b {
+  display: block;
+  font-weight: 650;
+}
+
+.fx-steps code {
+  display: block;
+  margin-top: 4px;
+  padding: 8px 11px;
+  border-radius: 7px;
+  background: var(--surface-hover);
+  color: var(--text);
+  font-family: "Cambria Math", "STIX Two Math", Consolas, monospace;
+  font-size: 12.5px;
+  overflow-wrap: anywhere;
+}
+
+/* Callouts */
+
+.fx-insight {
+  display: flex;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.fx-insight span {
+  color: var(--accent);
+  font-size: 16px;
+}
+
+.fx-insight p {
+  margin: 0;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.fx-note {
+  margin: 14px 0 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.fx-state {
+  padding: 48px 20px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  text-align: center;
+}
+
+.fx-state--error {
+  border-color: var(--fx-bad);
+  color: var(--fx-bad);
+}
+
+/* Predictor calculator */
+
+.fx-calc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.fx-calc-result {
+  margin-left: auto;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  text-align: right;
+}
+
+.fx-calc-result strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 22px;
+  font-weight: 650;
+}
+
+/* Rule / itemset pills */
+
+.fx-itemset {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.fx-itemset span {
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 550;
+}
+
+.fx-arrow {
+  margin: 0 8px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.fx-meter {
+  display: inline-block;
+  width: 72px;
+  height: 6px;
+  margin-right: 8px;
+  overflow: hidden;
+  vertical-align: middle;
+  border-radius: 999px;
+  background: var(--surface-hover);
+}
+
+.fx-meter i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+}
+
+.fx-classbar {
+  display: flex;
+  min-width: 120px;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface-hover);
+}
+
+.fx-classbar i {
+  display: block;
+  height: 100%;
+}
+
+.fx-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 12px 0 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.fx-legend b {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 6px;
+  border-radius: 3px;
+}
+
+@media (max-width: 1100px) {
+  .fx-grid-2,
+  .fx-grid-2--wide {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .fx-head {
+    flex-direction: column;
+  }
+
+  .fx-card {
+    padding: 18px 14px;
+  }
+
+  .fx-calc-result {
+    margin-left: 0;
+    text-align: left;
+  }
+}

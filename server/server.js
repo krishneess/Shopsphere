@@ -13,6 +13,8 @@ const { connectDB } = require("./config");
 const productRoutes = require("./routes/products");
 const salesRoutes = require("./routes/sales");
 const accountRoutes = require("./routes/account");
+const regressionRoutes = require("./routes/regression");
+const miningRoutes = require("./routes/mining");
 
 
 
@@ -46,6 +48,8 @@ app.use("/api/olap", olapRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/sales", salesRoutes);
 app.use("/api/account", accountRoutes);
+app.use("/api/regression", regressionRoutes);
+app.use("/api/mining", miningRoutes);
 
 app.get("/api/products/:id", async (req, res) => {
     try {

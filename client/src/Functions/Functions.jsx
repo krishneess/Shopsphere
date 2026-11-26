@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./Functions.css";
 
-import ETLModule from "./ETLModule";
-import EDAModule from "./EDAModule";
-import OLAPModule from "./OLAPModule";
-import StatsModule from "./StatsModule";
-import RegressionModule from "./RegressionModule";
+import ETLModule from "./ETL/ETLModule";
+import EDAModule from "./EDA/EDAModule";
+import OLAPModule from "./OLAP/OLAPModule";
+import StatsModule from "./Statistics/StatsModule";
+import SimpleRegression from "./SimpleRegression/SimpleRegression";
+import MultipleRegression from "./MultipleRegression/MultipleRegression";
+import AssociationRules from "./AssociationRules/AssociationRules";
+import GainRatio from "./GainRatio/GainRatio";
+import GiniIndex from "./GiniIndex/GiniIndex";
 
 const modules = [
     {
@@ -45,18 +49,62 @@ const modules = [
         tags: ["Correlation", "Hypothesis Testing", "Statistics"],
     },
     {
-        id: "regression",
+        id: "simple-regression",
         number: "05",
         icon: "↗",
-        title: "Regression Analysis",
+        title: "Simple Linear Regression",
         description:
-            "Predict unit prices using multiple linear regression and evaluate model performance.",
-        tags: ["Regression", "Gradient Descent", "Model Evaluation"],
+            "Fit a least-squares line between two variables, test its significance, and predict new values.",
+        tags: ["Least Squares", "R²", "Residuals"],
+    },
+    {
+        id: "multiple-regression",
+        number: "06",
+        icon: "⩘",
+        title: "Multiple Linear Regression",
+        description:
+            "Predict a target from several variables at once and compare how much each one matters.",
+        tags: ["Normal Equations", "Adjusted R²", "VIF"],
+    },
+    {
+        id: "association",
+        number: "07",
+        icon: "⛓",
+        title: "Association Rule Mining",
+        description:
+            "Discover which products are bought together using the Apriori algorithm.",
+        tags: ["Apriori", "Support", "Lift"],
+    },
+    {
+        id: "gain-ratio",
+        number: "08",
+        icon: "⑂",
+        title: "Gain Ratio",
+        description:
+            "Rank attributes for decision-tree splits using entropy, information gain and split info.",
+        tags: ["Entropy", "Information Gain", "C4.5"],
+    },
+    {
+        id: "gini",
+        number: "09",
+        icon: "◐",
+        title: "Gini Index",
+        description:
+            "Measure class impurity and pick the split that reduces it the most.",
+        tags: ["Impurity", "Gini Gain", "CART"],
     },
 ];
 
 function Functions() {
     const [activeModule, setActiveModule] = useState(null);
+    const detailRef = useRef(null);
+
+    // Bring the opened module into view (the card grid is tall)
+    useEffect(() => {
+        if (activeModule && detailRef.current) {
+            detailRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    }, [activeModule]);
 
     const selectedModule = modules.find(
         (module) => module.id === activeModule
@@ -105,7 +153,7 @@ function Functions() {
                     </div>
 
                     <span className="functions-module-count">
-                        05 MODULES
+                        {String(modules.length).padStart(2, "0")} MODULES
                     </span>
                 </div>
 
@@ -161,7 +209,7 @@ function Functions() {
             </section>
 
             {selectedModule && (
-                <section className="functions-module-detail">
+                <section className="functions-module-detail" ref={detailRef}>
                     <div className="functions-detail-heading">
                         <div>
                             <p className="functions-eyebrow">
@@ -189,8 +237,16 @@ function Functions() {
                         <OLAPModule />
                     ) : selectedModule.id === "stats" ? (
                         <StatsModule />
-                    ) : selectedModule.id === "regression" ? (
-                        <RegressionModule />
+                    ) : selectedModule.id === "simple-regression" ? (
+                        <SimpleRegression />
+                    ) : selectedModule.id === "multiple-regression" ? (
+                        <MultipleRegression />
+                    ) : selectedModule.id === "association" ? (
+                        <AssociationRules />
+                    ) : selectedModule.id === "gain-ratio" ? (
+                        <GainRatio />
+                    ) : selectedModule.id === "gini" ? (
+                        <GiniIndex />
                     ) : null}
 
                     <section className="functions-workflow">
